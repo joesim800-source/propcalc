@@ -1,0 +1,20 @@
+name: Fetch PropCalc
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/fetch.yml'
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: curl -L -o index.html https://propertycalcula.netlify.app/
+      - run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "Import PropCalc from Netlify" || echo "no changes"
+          git push
